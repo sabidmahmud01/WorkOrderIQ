@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 type AnalysisResult = {
   summary: string;
@@ -38,46 +39,53 @@ function App() {
 }
 
   return (
-    <main>
-      <h1>WorkOrderIQ</h1>
-      <p>AI Facilities Ticket Assistant</p>
+    <main className="app-shell">
+      <section className="hero-card">
+        <h1>WorkOrderIQ</h1>
+        <p className="eyebrow">AI Facilities Ticket Assistant</p>
 
-      <p>
-        Paste an AiM-style work order description and generate a structured
-        summary, category, priority, checklist, and technician note.
-      </p>
+        <p className="subtitle">
+          Paste an AiM-style work order description and generate a structured
+          summary, category, priority, checklist, and technician note.
+        </p>
+        <div className="input-section">
+          <label htmlFor="work-order">Work Order Description</label>
 
-      <label htmlFor="work-order">Work Order Description</label>
+          <textarea
+            id="work-order"
+            value={workOrderText}
+            onChange={(event) => setWorkOrderText(event.target.value)}
+            placeholder="Example: Printer in room 137 is showing offline..."
+          />
 
-      <textarea
-        id="work-order"
-        value={workOrderText}
-        onChange={(event) => setWorkOrderText(event.target.value)}
-        placeholder="Example: Printer in room 137 is showing offline..."
-      />
+          <button onClick={handleAnalyze}>Analyze Work Order</button>
+        </div>
+        
 
-      <button onClick={handleAnalyze}>Analyze Work Order</button>
+        
+      </section>
+      
 
       {result && (
-        <section>
+        <section className="results-section">
           <h2>Analysis Result</h2>
 
-          <div>
+          <div className="result-block">
             <h3>Summary</h3>
             <p>{result.summary}</p>
           </div>
 
-          <div>
+          <div className="result-block">
             <h3>Category</h3>
             <p>{result.category}</p>
           </div>
 
-          <div>
+          <div className="result-block">
             <h3>Priority</h3>
             <p>{result.priority}</p>
           </div>
 
-          <div>
+          <div className="result-block">
             <h3>Troubleshooting Checklist</h3>
             <ul>
               {result.checklist.map((item) => (
@@ -85,7 +93,7 @@ function App() {
               ))}
             </ul>
           </div>
-          <div>
+          <div className="result-block">
             <h3>Suggested Technician Note</h3>
             <p>{result.technicianNote}</p>
           </div>
