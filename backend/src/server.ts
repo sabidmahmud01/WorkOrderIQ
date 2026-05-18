@@ -200,7 +200,7 @@ app.post("/api/analyze", (req,res) => {
         category: category,
         priority: priority,
         checklist: checklist,
-        technicianNote: "Reviewed the reported issue and began standard troubleshooting. Further action may be required depending on device or system status."
+        technicianNote: technicianNote
     });
 });
 
