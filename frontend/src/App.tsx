@@ -12,30 +12,42 @@ type AnalysisResult = {
 function App() {
   const [workOrderText, setWorkOrderText] = useState("");
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleAnalyze() {
+  async function handleAnalyze() {
   if (!workOrderText.trim()) {
     alert("Please enter a work order description first.");
     return;
   }
+  
+  setIsLoading(true);
+  setErrorMessage("");
 
-  const mockResult: AnalysisResult = {
-    summary:
-      "The reported issue needs technical review and may require first-level troubleshooting.",
-    category: "General IT Support",
-    priority: "Medium",
-    checklist: [
-      "Confirm the issue with the user.",
-      "Check the affected device or system.",
-      "Verify network, power, or account access if relevant.",
-      "Document troubleshooting steps.",
-      "Escalate if the issue cannot be resolved at first level.",
-    ],
-    technicianNote:
-      "Reviewed the reported issue and began standard troubleshooting. Further action may be required depending on device or system status.",
-  };
+  try {
+    const response = await fetch("http://localhost:3000/api/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        workOrderText: workOrderText,
+      }),
+    });
 
-  setResult(mockResult);
+    if (!response.ok) {
+      throw new Error("Backend returned an error.");
+    }
+
+    const data: AnalysisResult = await response.json();
+
+    setResult(data);
+  } catch (error) {
+    console.error(error);
+    setErrorMessage("Unable to analyze work order. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
 }
 
   return (
@@ -58,7 +70,11 @@ function App() {
             placeholder="Example: Printer in room 137 is showing offline..."
           />
 
-          <button onClick={handleAnalyze}>Analyze Work Order</button>
+          <button onClick={handleAnalyze} disabled={isLoading}>
+            {isLoading ? "Analyzing..." : "Analyze Work Order"}
+          </button>
+
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
         
 

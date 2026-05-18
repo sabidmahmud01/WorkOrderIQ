@@ -75,6 +75,10 @@ button {
 button:hover {
   background: #1d4ed8;
 }
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 
 .results-section {
   margin-top: 24px;
@@ -82,4 +86,13 @@ button:hover {
   border-radius: 20px;
   padding: 28px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+.error-message {
+  color: #b91c1c;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 0;
 }
